@@ -10,6 +10,14 @@ def make_clickable(link):
     #text = link.split('=')[1]
     return f'<a target="_blank" href="{link}">clique aqui</a>'
 
+def make_status(status):
+    if status=="alive":
+        return f'<div style="background-color: green"> CONECTADO <div/>'
+    if status=="invited":
+        return f'<div style="background-color: yellow"> CONVIDADO <div/>'
+    if status=="disconnected":
+        return f'<div style="background-color: Red"> DESCONECTADO <div/>'
+
 st.title('Visualizador de arquivos')
 
 file = st.file_uploader(
@@ -29,9 +37,9 @@ if file:
         df = read_csv(file,sep=",")
         # link is the column with hyperlinks
         df['link'] = df['link'].apply(make_clickable)
-        #df = df.to_html(escape=False)
-        #    st.write(df, unsafe_allow_html=True)
-        #st.dataframe(df)
+        # colored status os conection
+        df['status'] = df['status'].apply(make_status)
+
         st.write(df.to_html(escape=False, index=False), unsafe_allow_html=True)
 
         
